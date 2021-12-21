@@ -75,7 +75,7 @@ function loadImages(){
 		markerDiv.setAttribute("scale", "1 1 1");
 	}
 	else if( modelId == "3"){
-		markerDiv.setAttribute("src", "models/Image/butterflies.gif");
+		markerDiv.setAttribute("material", "shader:gif;src:url(https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif)");
 		markerDiv.setAttribute("scale", "1 1 1");
 	}
 	else if( modelId == "2"){
