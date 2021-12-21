@@ -11,7 +11,7 @@ function loadMarkers(){
 
 	
 	// Upadate tracking image URL
-	let baseUrl = "https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/anishjiben/webar-demo-main/main/track/";
+	let baseUrl = "https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/trensertest/webar-demo/main/track/";
 	let imageSample = baseUrl + imageId + ".mind;";
 	imageSample = "imageTargetSrc: " + imageSample;
 	console.log(imageSample);
