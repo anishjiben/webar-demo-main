@@ -75,7 +75,7 @@ function loadImages(){
 		markerDiv.setAttribute("scale", "1 1 1");
 	}
 	else if( modelId == "3"){
-		markerDiv.setAttribute("material", "shader:gif;src:url(https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif)");
+		markerDiv.setAttribute("material", "models/Image/butterflies.gif");
 		markerDiv.setAttribute("scale", "1 1 1");
 	}
 	else if( modelId == "2"){
@@ -90,6 +90,7 @@ function loadImages(){
 		markerDiv.setAttribute("scale", "1 1 1");
 	}
 	var element = document.getElementById("#modelEntity");
+	element.setAttribute('material',"shader:gif;src:url(https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif)");
 	element.appendChild(markerDiv);	
 }
 
