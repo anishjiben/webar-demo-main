@@ -91,9 +91,17 @@ function loadImages(){
 	// 	markerDiv.setAttribute("src", "models/Image/5.jpg");
 	// 	markerDiv.setAttribute("scale", "1 1 1");
 	// }
+
+	AFRAME.registerComponent('do-something-once-loaded', {
+		init: function () {
+		  // This will be called after the entity has properly attached and loaded.
+		  console.log('I am ready!');
+		  gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate('.example')
+		}
+	  });
 	var element = document.getElementById("#modelEntity");
+	element.setAttribute('do-something-once-loaded','');
 	element.appendChild(markerDiv);	
-	gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate('.example')
 }
 
 
