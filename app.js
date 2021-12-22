@@ -19,16 +19,16 @@ function loadMarkers(){
 	var sceneNode = document.getElementById("#scene");
 	sceneNode.setAttribute("mindar-image", imageSample);
 	
-	if( modelType == "3d"){
-		load3dModles();
-	}
-	else if( modelType == "2d"){
-		loadImages();
-	}
-	else if( modelType == "text")
-	{
-		loadText()
-	}
+	// if( modelType == "3d"){
+	// 	load3dModles();
+	// }
+	// else if( modelType == "2d"){
+	// 	loadImages();
+	// }
+	// else if( modelType == "text")
+	// {
+	// 	loadText()
+	// }
 }
 
 function load3dModles(){
