@@ -11,13 +11,13 @@ function loadMarkers(){
 
 	
 	// Upadate tracking image URL
-	let baseUrl = "https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/trensertest/webar-demo/main/track/";
-	let imageSample = baseUrl + imageId + ".mind;";
-	imageSample = "imageTargetSrc: " + imageSample;
-	console.log(imageSample);
+	// let baseUrl = "https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/trensertest/webar-demo/main/track/";
+	// let imageSample = baseUrl + imageId + ".mind;";
+	// imageSample = "imageTargetSrc: " + imageSample;
+	// console.log(imageSample);
 	
-	var sceneNode = document.getElementById("#scene");
-	sceneNode.setAttribute("mindar-image", imageSample);
+	// var sceneNode = document.getElementById("#scene");
+	// sceneNode.setAttribute("mindar-image", imageSample);
 	
 	if( modelType == "3d"){
 		load3dModles();
