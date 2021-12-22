@@ -99,7 +99,7 @@ function loadImages() {
 		}
 	});
 	var entityEl = document.createElement('a-entity');
-	element.appendChild(markerDiv);
+	entityEl.appendChild(markerDiv);
 	entityEl.setAttribute('do-something-once-loaded', '');
 	sceneEl.appendChild(entityEl);
 
