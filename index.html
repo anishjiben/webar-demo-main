@@ -6,16 +6,15 @@
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/dist/mindar-image-aframe.prod.js"></script>
     
-    <script src="https://unpkg.com/konva@8.3.1/konva.min.js"></script>
     <script src="https://unpkg.com/gifler@0.1.0/gifler.min.js"></script>
-    
+
 	<script src="app.js"></script> 
   </head>
   <body>
     <a-scene id="#scene" mindar-image="imageTargetSrc:https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/trensertest/webar-demo/main/track/IMG_3013.mind" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" >  
       <a-assets>
         <!-- <img id="card" src="https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif" /> -->
-        <div id="container"></div>
+        <canvas class="example"></canvas>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -25,37 +24,7 @@
       </a-entity>
     </a-scene>
     <script>
-      var width = window.innerWidth;
-      var height = window.innerHeight;
-
-      var stage = new Konva.Stage({
-        container: 'container',
-        width: width,
-        height: height,
-      });
-
-      var layer = new Konva.Layer();
-      stage.add(layer);
-
-      var canvas = document.createElement('canvas');
-      // use external library to parse and draw gif animation
-      function onDrawFrame(ctx, frame) {
-        // update canvas size
-        canvas.width = frame.width;
-        canvas.height = frame.height;
-        // update canvas that we are using for Konva.Image
-        ctx.drawImage(frame.buffer, 0, 0);
-        // redraw the layer
-        layer.draw();
-      }
-
-      gifler('/assets/yoda.gif').frames(canvas, onDrawFrame);
-
-      // draw resulted canvas into the stage as Konva.Image
-      var image = new Konva.Image({
-        image: canvas,
-      });
-      layer.add(image);
+     gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate('.example');
     </script>
   </body>
 </html>
