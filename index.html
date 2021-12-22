@@ -10,14 +10,48 @@
   <body>
     <a-scene id="#scene" mindar-image="imageTargetSrc:https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/trensertest/webar-demo/main/track/IMG_3013.mind" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" >  
       <a-assets>
-        <img id="card" src="https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif" />
+        <!-- <img id="card" src="https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif" /> -->
+        <div id="container"></div>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
+        <a-plane src="#container" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
       </a-entity>
     </a-scene>
+    <script>
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+
+      var stage = new Konva.Stage({
+        container: 'container',
+        width: width,
+        height: height,
+      });
+
+      var layer = new Konva.Layer();
+      stage.add(layer);
+
+      var canvas = document.createElement('canvas');
+      // use external library to parse and draw gif animation
+      function onDrawFrame(ctx, frame) {
+        // update canvas size
+        canvas.width = frame.width;
+        canvas.height = frame.height;
+        // update canvas that we are using for Konva.Image
+        ctx.drawImage(frame.buffer, 0, 0);
+        // redraw the layer
+        layer.draw();
+      }
+
+      gifler('/assets/yoda.gif').frames(canvas, onDrawFrame);
+
+      // draw resulted canvas into the stage as Konva.Image
+      var image = new Konva.Image({
+        image: canvas,
+      });
+      layer.add(image);
+    </script>
   </body>
 </html>
