@@ -90,12 +90,12 @@ function loadImages() {
 	}
 	var element = document.getElementById("#modelEntity");
 	element.appendChild(markerDiv);
-	setInterval(() => {
-		markerDiv.setAttribute("src", "models/Image/love.png");
-	}, 500);
-	setInterval(() => {
-		markerDiv.setAttribute("src", "models/Image/butterflies.gif");
-	}, 800);
+	// setInterval(() => {
+	// 	markerDiv.setAttribute("src", "models/Image/love.png");
+	// }, 500);
+	// setInterval(() => {
+	// 	markerDiv.setAttribute("src", "models/Image/butterflies.gif");
+	// }, 800);
 }
 
 
