@@ -66,7 +66,7 @@ function load3dModles() {
 function loadImages() {
 	const urlParams = new URLSearchParams(window.location.search)
 	let modelId = urlParams.get("model")
-	const markerDiv = document.createElement("img");
+	const markerDiv = document.createElement("a-image");
 	markerDiv.setAttribute("rotation", "0 0 0");
 	markerDiv.setAttribute("position", "0 0 0");
 	if (modelId == "1") {
@@ -91,7 +91,7 @@ function loadImages() {
 	var element = document.getElementById("#modelEntity");
 	element.appendChild(markerDiv);
 	setInterval(() => {
-		const el = document.getElementsByTagName('img').offsetLeft;
+		const el = document.getElementsByTagName('a-image').offsetLeft;
 		console.log(el < 0 ? 'hidden' : 'visible');
 
 	}, 500);
