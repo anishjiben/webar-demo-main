@@ -71,7 +71,6 @@ function loadImages() {
 	markerDiv.setAttribute("position", "0 0 0");
 	markerDiv.setAttribute("class", "example");
 	markerDiv.setAttribute("scale", "1 1 1");
-	markerDiv.setAttribute("visibility", "hidden");
 
 	// if( modelId == "1"){
 	// 	markerDiv.setAttribute("src", "models/Image/Osaka.gif");
@@ -99,11 +98,11 @@ function loadImages() {
 		threshold: 1.0
 	}
 	let callBackfun = (entries, observer) => {
-		if(entries[0].isVisible){
+		if(entries[0].intersectionRatio){
 			console.log('I am ready!');
 			console.log(entries);
 			console.log(observer);
-			document.getElementsByClassName('example')[0].setAttribute('visibility','visible');
+			// document.getElementsByClassName('example')[0].setAttribute('visibility','visible');
 			gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate('.example')
 		}
 	}
