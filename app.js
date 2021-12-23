@@ -98,7 +98,7 @@ function loadImages() {
 	}
 	let callBackfun = (entries, observer) => {
 		console.log('I am ready!');
-		console.log(entrie);
+		console.log(entries);
 		console.log(observer);
 		gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate('.example')
 	}
