@@ -71,6 +71,8 @@ function loadImages() {
 	markerDiv.setAttribute("position", "0 0 0");
 	markerDiv.setAttribute("class", "example");
 	markerDiv.setAttribute("scale", "1 1 1");
+	markerDiv.setAttribute("visibility", "hidden");
+
 	// if( modelId == "1"){
 	// 	markerDiv.setAttribute("src", "models/Image/Osaka.gif");
 	// 	markerDiv.setAttribute("scale", "1 1 1");
