@@ -103,6 +103,7 @@ function loadImages() {
 			console.log('I am ready!');
 			console.log(entries);
 			console.log(observer);
+			document.getElementsByClassName('example')[0].setAttribute('visibility','visible');
 			gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate('.example')
 		}
 	}
