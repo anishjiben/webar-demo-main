@@ -90,11 +90,25 @@ function loadImages() {
 	}
 	var element = document.getElementById("#modelEntity");
 	element.appendChild(markerDiv);
-	setInterval(() => {
-		const el = document.getElementsByTagName('a-image').offsetLeft;
-		console.log(el < 0 ? 'hidden' : 'visible');
+	// setInterval(() => {
+	// 	const el = document.getElementsByTagName('a-image').offsetLeft;
+	// 	console.log(el < 0 ? 'hidden' : 'visible');
 
-	}, 500);
+	// }, 500);
+	gifFrames(
+		{ url: 'models/Image/butterflies.gif', frames: 'all', outputType: 'png', cumulative: true },
+		function (err, frameData) {
+		  if (err) {
+			throw err;
+		  }
+		  console.log(frameData);
+		  frameData.forEach(function (frame) {
+			frame.getImage().pipe(fs.createWriteStream(
+			  'image-' + frame.frameIndex + '.png'
+			));
+		  });
+		}
+	  );
 }
 
 
