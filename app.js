@@ -1,3 +1,6 @@
+var gifFrames = require('gif-frames');
+var fs = require('fs');
+
 function loadMarkers() {
 	// Get Query Parameters
 	const urlParams = new URLSearchParams(window.location.search)
