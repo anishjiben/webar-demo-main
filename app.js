@@ -90,18 +90,32 @@ function loadImages() {
 	// 	markerDiv.setAttribute("src", "models/Image/5.jpg");
 	// 	markerDiv.setAttribute("scale", "1 1 1");
 	// }
-	var sceneEl = document.querySelector('a-scene');
-	AFRAME.registerComponent('do-something-once-loaded', {
-		init: function () {
-			// This will be called after the entity has properly attached and loaded.
-			console.log('I am ready!');
-			gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate('.example')
-		}
-	});
+	// var sceneEl = document.querySelector('a-scene');
+	let options = {
+		root: document.querySelector('a-scene'),
+		rootMargin: '0px',
+		threshold: 1.0
+	}
+	let callBackfun = (entries, observer) => {
+		console.log('I am ready!');
+		console.log(entrie);
+		console.log(observer);
+		gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate('.example')
+	}
+	let observer = new IntersectionObserver(callBackfun, options);
+
+	// AFRAME.registerComponent('do-something-once-loaded', {
+	// 	init: function () {
+	// 		// This will be called after the entity has properly attached and loaded.
+	// 		console.log('I am ready!');
+	// 		gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate('.example')
+	// 	}
+	// });
 	var entityEl = document.getElementById('#modelEntity');
 	entityEl.appendChild(markerDiv);
+	observer.observe(entityEl);
 	// sceneEl.appendChild(entityEl);
-	entityEl.setAttribute('do-something-once-loaded', '');
+	// entityEl.setAttribute('do-something-once-loaded', '');
 
 	// var element = document.getElementById("#modelEntity");
 	// element.setAttribute('do-something-once-loaded', '');
