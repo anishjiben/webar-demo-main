@@ -98,10 +98,10 @@ function loadImages() {
 			gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate('.example')
 		}
 	});
-	var entityEl = document.createElement('a-entity');
+	var entityEl = document.querySelector('#modelEntity');
 	entityEl.appendChild(markerDiv);
-	entityEl.setAttribute('do-something-once-loaded', '');
 	sceneEl.appendChild(entityEl);
+	entityEl.setAttribute('do-something-once-loaded', '');
 
 	// var element = document.getElementById("#modelEntity");
 	// element.setAttribute('do-something-once-loaded', '');
