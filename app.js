@@ -66,64 +66,35 @@ function load3dModles() {
 function loadImages() {
 	const urlParams = new URLSearchParams(window.location.search)
 	let modelId = urlParams.get("model")
-	const markerDiv = document.createElement("canvas");
+	const markerDiv = document.createElement("img");
 	markerDiv.setAttribute("rotation", "0 0 0");
 	markerDiv.setAttribute("position", "0 0 0");
-	markerDiv.setAttribute("class", "example");
-	markerDiv.setAttribute("scale", "1 1 1");
-
-	// if( modelId == "1"){
-	// 	markerDiv.setAttribute("src", "models/Image/Osaka.gif");
-	// 	markerDiv.setAttribute("scale", "1 1 1");
-	// }
-	// else if( modelId == "3"){
-	// 	markerDiv.setAttribute("src", "models/Image/butterflies.gif");
-	// 	markerDiv.setAttribute("scale", "1 1 1");
-	// }
-	// else if( modelId == "2"){
-	// 	markerDiv.setAttribute("src", "models/Image/love.png");
-	// 	markerDiv.setAttribute("scale", "1 1 1");
-	// }
-	// else if( modelId == "4"){
-	// 	markerDiv.setAttribute("src", "models/Image/4.jpg");
-	// 	markerDiv.setAttribute("scale", "1 1 1");
-	// } else {
-	// 	markerDiv.setAttribute("src", "models/Image/5.jpg");
-	// 	markerDiv.setAttribute("scale", "1 1 1");
-	// }
-	// var sceneEl = document.querySelector('a-scene');
-	let options = {
-		root: document.querySelector('a-scene'),
-		rootMargin: '0px',
-		threshold: 1.0
+	if (modelId == "1") {
+		markerDiv.setAttribute("src", "models/Image/Osaka.gif");
+		markerDiv.setAttribute("scale", "1 1 1");
 	}
-	let callBackfun = (entries, observer) => {
-		if(entries[0].intersectionRatio){
-			console.log('I am ready!');
-			console.log(entries);
-			console.log(observer);
-			// document.getElementsByClassName('example')[0].setAttribute('visibility','visible');
-			gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate('.example')
-		}
+	else if (modelId == "3") {
+		markerDiv.setAttribute("src", "models/Image/butterflies.gif");
+		markerDiv.setAttribute("scale", "1 1 1");
 	}
-	let observer = new IntersectionObserver(callBackfun, options);
+	else if (modelId == "2") {
+		markerDiv.setAttribute("src", "models/Image/love.png");
+		markerDiv.setAttribute("scale", "1 1 1");
+	}
+	else if (modelId == "4") {
+		markerDiv.setAttribute("src", "models/Image/4.jpg");
+		markerDiv.setAttribute("scale", "1 1 1");
+	} else {
+		markerDiv.setAttribute("src", "models/Image/5.jpg");
+		markerDiv.setAttribute("scale", "1 1 1");
+	}
+	var element = document.getElementById("#modelEntity");
+	element.appendChild(markerDiv);
+	setInterval(() => {
+		const el = document.getElementsByTagName('img').offsetLeft;
+		console.log(el < 0 ? 'hidden' : 'visible');
 
-	// AFRAME.registerComponent('do-something-once-loaded', {
-	// 	init: function () {
-	// 		// This will be called after the entity has properly attached and loaded.
-	// 		console.log('I am ready!');
-	// 		gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate('.example')
-	// 	}
-	// });
-	var entityEl = document.getElementById('#modelEntity');
-	entityEl.appendChild(markerDiv);
-	observer.observe(entityEl);
-	// sceneEl.appendChild(entityEl);
-	// entityEl.setAttribute('do-something-once-loaded', '');
-
-	// var element = document.getElementById("#modelEntity");
-	// element.setAttribute('do-something-once-loaded', '');
-	// element.appendChild(markerDiv);
+	}, 500);
 }
 
 
