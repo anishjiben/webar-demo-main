@@ -1,6 +1,3 @@
-var gifFrames = require('gif-frames');
-var fs = require('fs');
-
 function loadMarkers() {
 	// Get Query Parameters
 	const urlParams = new URLSearchParams(window.location.search)
@@ -93,11 +90,12 @@ function loadImages() {
 	}
 	var element = document.getElementById("#modelEntity");
 	element.appendChild(markerDiv);
-	// setInterval(() => {
-	// 	const el = document.getElementsByTagName('a-image').offsetLeft;
-	// 	console.log(el < 0 ? 'hidden' : 'visible');
-
-	// }, 500);
+	setInterval(() => {
+		markerDiv.setAttribute("src", "models/Image/love.png");
+	}, 500);
+	setInterval(() => {
+		markerDiv.setAttribute("src", "models/Image/models/Image/4.jpg");
+	}, 800);
 	gifFrames(
 		{ url: 'models/Image/butterflies.gif', frames: 'all', outputType: 'png', cumulative: true },
 		function (err, frameData) {
