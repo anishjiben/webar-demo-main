@@ -92,7 +92,7 @@ function loadImages() {
 	// }
 	// var sceneEl = document.querySelector('a-scene');
 	let options = {
-		root: document.querySelector('a-scene'),
+		root: document.getElementById('#modelEntity'),
 		rootMargin: '0px',
 		threshold: 1.0
 	}
@@ -100,6 +100,7 @@ function loadImages() {
 		console.log('I am ready!');
 		console.log(entries);
 		console.log(observer);
+		console.log(markerDiv.getAttribute('visibility'));
 		gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate('.example')
 	}
 	let observer = new IntersectionObserver(callBackfun, options);
@@ -113,7 +114,7 @@ function loadImages() {
 	// });
 	var entityEl = document.getElementById('#modelEntity');
 	entityEl.appendChild(markerDiv);
-	observer.observe(entityEl);
+	observer.observe(markerDiv);
 	// sceneEl.appendChild(entityEl);
 	// entityEl.setAttribute('do-something-once-loaded', '');
 
