@@ -94,22 +94,8 @@ function loadImages() {
 		markerDiv.setAttribute("src", "models/Image/love.png");
 	}, 500);
 	setInterval(() => {
-		markerDiv.setAttribute("src", "models/Image/models/Image/4.jpg");
+		markerDiv.setAttribute("src", "models/Image/butterflies.gif");
 	}, 800);
-	gifFrames(
-		{ url: 'models/Image/butterflies.gif', frames: 'all', outputType: 'png', cumulative: true },
-		function (err, frameData) {
-		  if (err) {
-			throw err;
-		  }
-		  console.log(frameData);
-		  frameData.forEach(function (frame) {
-			frame.getImage().pipe(fs.createWriteStream(
-			  'image-' + frame.frameIndex + '.png'
-			));
-		  });
-		}
-	  );
 }
 
 
