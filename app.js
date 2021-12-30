@@ -39,7 +39,6 @@ function load3dModles() {
 	markerDiv.setAttribute("rotation", "0 0 0");
 	markerDiv.setAttribute("position", "0 0 0");
 
-
 	if (modelId == "1") {
 		markerDiv.setAttribute("gltf-model", "models/3D/characterlowpoly2c3.glb");
 		markerDiv.setAttribute("scale", "0.5 0.5 0.5");
@@ -64,38 +63,46 @@ function load3dModles() {
 }
 
 function loadImages() {
-	const urlParams = new URLSearchParams(window.location.search)
-	let modelId = urlParams.get("model")
-	const markerDiv = document.createElement("a-image");
-	markerDiv.setAttribute("rotation", "0 0 0");
-	markerDiv.setAttribute("position", "0 0 0");
-	if (modelId == "1") {
-		markerDiv.setAttribute("src", "models/Image/Osaka.gif");
-		markerDiv.setAttribute("scale", "1 1 1");
-	}
-	else if (modelId == "3") {
-		markerDiv.setAttribute("src", "models/Image/butterflies.gif");
-		markerDiv.setAttribute("scale", "1 1 1");
-	}
-	else if (modelId == "2") {
-		markerDiv.setAttribute("src", "models/Image/love.png");
-		markerDiv.setAttribute("scale", "1 1 1");
-	}
-	else if (modelId == "4") {
-		markerDiv.setAttribute("src", "models/Image/4.jpg");
-		markerDiv.setAttribute("scale", "1 1 1");
-	} else {
-		markerDiv.setAttribute("src", "models/Image/5.jpg");
-		markerDiv.setAttribute("scale", "1 1 1");
-	}
-	var element = document.getElementById("#modelEntity");
-	element.appendChild(markerDiv);
-	// setInterval(() => {
-	// 	markerDiv.setAttribute("src", "models/Image/love.png");
-	// }, 500);
-	// setInterval(() => {
+	// const urlParams = new URLSearchParams(window.location.search)
+	// let modelId = urlParams.get("model")
+	// const markerDiv = document.createElement("a-image");
+	// markerDiv.setAttribute("rotation", "0 0 0");
+	// markerDiv.setAttribute("position", "0 0 0");
+	// if (modelId == "1") {
+	// 	markerDiv.setAttribute("src", "models/Image/Osaka.gif");
+	// 	markerDiv.setAttribute("scale", "1 1 1");
+	// }
+	// else if (modelId == "3") {
 	// 	markerDiv.setAttribute("src", "models/Image/butterflies.gif");
-	// }, 800);
+	// 	markerDiv.setAttribute("scale", "1 1 1");
+	// }
+	// else if (modelId == "2") {
+	// 	markerDiv.setAttribute("src", "models/Image/love.png");
+	// 	markerDiv.setAttribute("scale", "1 1 1");
+	// }
+	// else if (modelId == "4") {
+	// 	markerDiv.setAttribute("src", "models/Image/4.jpg");
+	// 	markerDiv.setAttribute("scale", "1 1 1");
+	// } else {
+	// 	markerDiv.setAttribute("src", "models/Image/5.jpg");
+	// 	markerDiv.setAttribute("scale", "1 1 1");
+	// }
+	// var element = document.getElementById("#modelEntity");
+	// element.addEventListener("resize", event => {
+	// 	console.log("resize : ", event);
+	// });
+	// element.addEventListener("targetFound", event => {
+	// 	console.log("target found ",event);
+	// 	gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate('.imagecanvas');
+	// 	document.getElementById("imageCanvasID").style.visibility = "visible";
+	// });
+
+	// // detect target lost
+	// element.addEventListener("targetLost", event => {
+	// 	console.log("target lost");
+	// 	document.getElementById("imageCanvasID").style.visibility = "hidden";
+	// });
+	// element.appendChild(markerDiv);
 }
 
 
@@ -112,3 +119,14 @@ function loadText() {
 	element.appendChild(markerDiv);
 }
 
+AFRAME.registerComponent('draw-canvas', {
+	schema: { default: '' },
+
+	init: function () {
+		this.canvas = document.getElementById(this.data);
+		// this.ctx = this.canvas.getContext('2d');
+		this.canvas.setAttribute('src',"models/Image/butterflies.gif")
+		// gifler('models/Image/butterflies.gif').animate(this.canvas);
+		// Draw on canvas...
+	}
+});

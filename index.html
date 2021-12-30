@@ -1,18 +1,40 @@
 <html>
   <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/dist/mindar-image.prod.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/dist/mindar-image.prod.js"></script>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/dist/mindar-image-aframe.prod.js"></script>	
-    <!-- <script src="https://unpkg.com/gifler@0.1.0/gifler.min.js"></script> -->
-    <script src="https://unpkg.com/gif-frames@1.0.1?main=bundled-min"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/dist/mindar-image-aframe.prod.js"></script> -->
+    <script src="mind-ar-js/dist/mindar-image.prod.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="mind-ar-js//dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://unpkg.com/gifler@0.1.0/gifler.min.js"></script>
+    <script src="aframe-gif-shader-master//dist/aframe-gif-shader.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.rawgit.com/buzzfeed/libgif-js/master/libgif.js"></script>
+
 	<script src="app.js"></script> 
+  <style>
+    #frames { display:none;}
+  </style>
   </head>
   <body onload="loadMarkers()">
+    <div class="gifimage" id="placehere">
+      <img src="https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif" alt="">
+    
+    </div>
+    <div id="frames" class="classGIF"></div>
+    <canvas id='myCanvas' width="10000" height="300"></canvas>
     <a-scene mindar-image="imageTargetSrc: https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/trensertest/webar-demo/main/track/IMG_3013.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      <a-assets>
+        <img id="butterflies" src="models/Image/butterflies.gif">
+        <!-- <canvas id="my-canvas" crossorigin="anonymous"></canvas> -->
+      </a-assets>
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
       <a-entity id="#modelEntity" mindar-image-target="targetIndex: 0">
+        <a-image geometry="primitive:plane;" material="shader:gif;src:#butterflies;transparent: false"></a-image>
       </a-entity>
     </a-scene>
   </body>
