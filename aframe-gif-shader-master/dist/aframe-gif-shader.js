@@ -108,13 +108,25 @@
 		this.__cnv = document.createElement('canvas');
 		this.__cnv.width = 2;
 		this.__cnv.height = 2;
+		this.__cnv.setAttribute("class", "render-canvas");
 		this.__ctx = this.__cnv.getContext('2d');
-		this.__texture = new THREE.CanvasTexture(this.__cnv); //renders straight from a canvas
+		this.__texture = new THREE.Texture(this.__cnv); //renders straight from a canvas
+		this.__texture.needsUpdate = true;
 		this.__reset();
-		this.material = new THREE.MeshBasicMaterial({ map: this.__texture });
+		this.material = new THREE.MeshBasicMaterial({
+			map: this.__texture,
+			transparent: false, // CHANGED
+			fog: false,
+			opacity:0.5,
+			precision:"highp",
+			color: 0x00ffff
+		});
+		this.__texture.needsUpdate = true;
+
 		this._fillImages((images)=>{
 			console.log(images);
 			// this.__addPublicFunctions();
+			console.log(images[0]);
 			this.__frames = images;
 			this.el.sceneEl.addBehavior(this);
 			this.__updateTexture(data);
@@ -130,8 +142,8 @@
 	   */
 	  update: function update(oldData) {
 	    console.log('update', oldData);
-	    this.__updateMaterial(oldData);
 	    this.__updateTexture(oldData);
+	    this.__updateMaterial(oldData);
 	    return this.material;
 	  },
 
@@ -523,9 +535,11 @@
 	   */
 	  __draw: function __draw() {
 		this.__clearCanvas();
-		var image = new Image();
-		image.src = this.__frames[this.__frameIdx].src;
-		this.__ctx.drawImage(image, 0, 0, this.__width, this.__height);
+		// var image = new Image();
+		// image.src = this.__frames[this.__frameIdx].src;
+		this.__ctx.drawImage(this.__frames[this.__frameIdx], 0, 0, this.__width, this.__height);
+		// console.log(image);
+		
 	    this.__texture.needsUpdate = true;
 	  },
 
@@ -596,6 +610,7 @@
 		let ctx = c.getContext("2d");
 		ctx.clearRect(0, 0, ctx.width, ctx.height);
 		ctx.beginPath();
+
 		let images = [];
 		$('div.gifimage img').each((idx, img_tag)=> {
 		  var total = 0;
@@ -612,16 +627,17 @@
 				total += 1;
 				rub.move_to(i);
 				// var canvas = cloneCanvas(rub.get_canvas());
-				var canvas = rub.get_canvas().toDataURL("image/png");
-				let img = $('<img id = "gifframe' + i + '"src= "' + canvas + '" class="frameimages">');
+				var canvas = rub.get_canvas().toDataURL('image/webp');
+				let img = $('<img id = "gifframe' + i + '"src= "' + canvas + '" class="frameimages" width="360" height="360">');
 				
 				// Use the reference to append the image.
-				frames.append(img);
+				// frames.append(img);
 				
 				// Add image to images array with the current index as the array index.
 				// Use the jQuery get method to get the actual DOM element.
 				images[i] = img.get(0);
 			  }
+			//   frames.append(images[0]);
 			//   console.log(images[0]);
 			  cb(images);		  
 			});

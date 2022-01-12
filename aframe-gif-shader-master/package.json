@@ -44,7 +44,7 @@
     "webpack": "^1.15.0"
   },
   "peerDependencies": {
-    "aframe": "^1.2.0"
+    "aframe": "1.2.0"
   },
   "contributors": [
     "UXVirtual <michael@uxvirtual.com> (http://www.uxvirtual.com)",

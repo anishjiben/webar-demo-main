@@ -8,8 +8,10 @@
     <script src="mind-ar-js/dist/mindar-image.prod.js"></script>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
-    <script src="mind-ar-js//dist/mindar-image-aframe.prod.js"></script>
-    <script src="https://unpkg.com/gifler@0.1.0/gifler.min.js"></script>
+    <!-- <script src="mind-ar-js//dist/mindar-image-aframe.prod.js"></script> -->
+    <script src="mind-ar-js//src/image-target/aframe.js"></script>
+
+    <!-- <script src="https://unpkg.com/gifler@0.1.0/gifler.min.js"></script> -->
     <script src="aframe-gif-shader-master//dist/aframe-gif-shader.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -17,24 +19,28 @@
 
 	<script src="app.js"></script> 
   <style>
-    #frames { display:none;}
+    /* #frames { display:none;} */
+    .render-canvas{
+      z-index: 99999999;
+      background-color: red !important;
+    }
   </style>
   </head>
   <body onload="loadMarkers()">
-    <div class="gifimage" id="placehere">
-      <img src="https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif" alt="">
+    <div class="gifimage"  width="100" height="100" id="placehere">
+      <img crossorigin="anonymous" src="https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif" alt="">
     
     </div>
     <div id="frames" class="classGIF"></div>
-    <canvas id='myCanvas' width="10000" height="300"></canvas>
+    <canvas id='myCanvas' ></canvas>
     <a-scene mindar-image="imageTargetSrc: https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/trensertest/webar-demo/main/track/IMG_3013.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <img id="butterflies" src="models/Image/butterflies.gif">
+        <img id="butterflies" crossorigin="anonymous" src="models/Image/butterflies.gif">
         <!-- <canvas id="my-canvas" crossorigin="anonymous"></canvas> -->
       </a-assets>
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-      <a-entity id="#modelEntity" mindar-image-target="targetIndex: 0">
-        <a-image geometry="primitive:plane;" material="shader:gif;src:#butterflies;transparent: false"></a-image>
+      <a-entity id="#modelEntity" mindar-image-target="targetIndex: 0" geometry="primitive: plane;" material="shader:gif;src:#butterflies;opacity:1.0">
+        <!-- <a-entity geometry="primitive:plane;" material="shader:gif;src:#butterflies;transparent: false"></a-entity> -->
       </a-entity>
     </a-scene>
   </body>

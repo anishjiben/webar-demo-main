@@ -1,35 +1,35 @@
-const {Controller, UI} = window.MINDAR.IMAGE;
+const { Controller, UI } = window.MINDAR.IMAGE;
 
 AFRAME.registerSystem('mindar-image-system', {
   container: null,
   video: null,
   processingImage: false,
 
-  init: function() {
+  init: function () {
     this.anchorEntities = [];
   },
 
-  tick: function() {
+  tick: function () {
   },
 
-  setup: function({imageTargetSrc, maxTrack, showStats, uiLoading, uiScanning, uiError, captureRegion}) {
+  setup: function ({ imageTargetSrc, maxTrack, showStats, uiLoading, uiScanning, uiError, captureRegion }) {
     this.imageTargetSrc = imageTargetSrc;
     this.maxTrack = maxTrack;
     this.showStats = showStats;
     this.captureRegion = captureRegion;
-    this.ui = new UI({uiLoading, uiScanning, uiError});
+    this.ui = new UI({ uiLoading, uiScanning, uiError });
   },
 
-  registerAnchor: function(el, targetIndex) {
-    this.anchorEntities.push({el: el, targetIndex: targetIndex});
+  registerAnchor: function (el, targetIndex) {
+    this.anchorEntities.push({ el: el, targetIndex: targetIndex });
   },
 
-  start: function() {
+  start: function () {
     this.container = this.el.sceneEl.parentNode;
 
     if (this.showStats) {
       this.mainStats = new Stats();
-      this.mainStats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+      this.mainStats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
       this.mainStats.domElement.style.cssText = 'position:absolute;top:0px;left:0px;z-index:999';
       this.container.appendChild(this.mainStats.domElement);
     }
@@ -38,32 +38,32 @@ AFRAME.registerSystem('mindar-image-system', {
     this._startVideo();
   },
 
-  switchTarget: function(targetIndex) {
+  switchTarget: function (targetIndex) {
     this.controller.interestedTargetIndex = targetIndex;
   },
 
-  stop: function() {
+  stop: function () {
     this.pause();
     const tracks = this.video.srcObject.getTracks();
-    tracks.forEach(function(track) {
+    tracks.forEach(function (track) {
       track.stop();
     });
     this.video.remove();
   },
 
-  pause: function(keepVideo=false) {
+  pause: function (keepVideo = false) {
     if (!keepVideo) {
       this.video.pause();
     }
     this.controller.stopProcessVideo();
   },
 
-  unpause: function() {
+  unpause: function () {
     this.video.play();
     this.controller.processVideo(this.video);
   },
 
-  _startVideo: function() {
+  _startVideo: function () {
     this.video = document.createElement('video');
 
     this.video.setAttribute('autoplay', '');
@@ -77,15 +77,17 @@ AFRAME.registerSystem('mindar-image-system', {
 
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       // TODO: show unsupported error
-      this.el.emit("arError", {error: 'VIDEO_FAIL'});
+      this.el.emit("arError", { error: 'VIDEO_FAIL' });
       this.ui.showCompatibility();
       return;
     }
 
-    navigator.mediaDevices.getUserMedia({audio: false, video: {
-      facingMode: 'environment',
-    }}).then((stream) => {
-      this.video.addEventListener( 'loadedmetadata', () => {
+    navigator.mediaDevices.getUserMedia({
+      audio: false, video: {
+        facingMode: 'environment',
+      }
+    }).then((stream) => {
+      this.video.addEventListener('loadedmetadata', () => {
         //console.log("video ready...", this.video);
         this.video.setAttribute('width', this.video.videoWidth);
         this.video.setAttribute('height', this.video.videoHeight);
@@ -94,11 +96,11 @@ AFRAME.registerSystem('mindar-image-system', {
       this.video.srcObject = stream;
     }).catch((err) => {
       console.log("getUserMedia error", err);
-      this.el.emit("arError", {error: 'VIDEO_FAIL'});
+      this.el.emit("arError", { error: 'VIDEO_FAIL' });
     });
   },
 
-  _startAR: async function() {
+  _startAR: async function () {
     const video = this.video;
     const container = this.container;
 
@@ -116,32 +118,32 @@ AFRAME.registerSystem('mindar-image-system', {
     this.controller = new Controller({
       inputWidth: video.videoWidth,
       inputHeight: video.videoHeight,
-      maxTrack: this.maxTrack, 
+      maxTrack: this.maxTrack,
       onUpdate: (data) => {
-	if (data.type === 'processDone') {
-	  if (this.mainStats) this.mainStats.update();
-	}
-	else if (data.type === 'updateMatrix') {
-	  const {targetIndex, worldMatrix} = data;
+        if (data.type === 'processDone') {
+          if (this.mainStats) this.mainStats.update();
+        }
+        else if (data.type === 'updateMatrix') {
+          const { targetIndex, worldMatrix } = data;
 
-	  for (let i = 0; i < this.anchorEntities.length; i++) {
-	    if (this.anchorEntities[i].targetIndex === targetIndex) {
-	      if (worldMatrix) {
-		this.anchorEntities[i].el.updatePaint(this.controller.capturedRegion);
-	      }
-	      this.anchorEntities[i].el.updateWorldMatrix(worldMatrix, );
-	      if (worldMatrix) {
-		this.ui.hideScanning();
-	      }
-	    }
-	  }
-	}
+          for (let i = 0; i < this.anchorEntities.length; i++) {
+            if (this.anchorEntities[i].targetIndex === targetIndex) {
+              if (worldMatrix) {
+                this.anchorEntities[i].el.updatePaint(this.controller.capturedRegion);
+              }
+              this.anchorEntities[i].el.updateWorldMatrix(worldMatrix);
+              if (worldMatrix) {
+                this.ui.hideScanning();
+              }
+            }
+          }
+        }
       }
     });
     this.controller.shouldCaptureRegion = this.captureRegion;
 
     const proj = this.controller.getProjectionMatrix();
-    const fov = 2 * Math.atan(1/proj[5] / vh * container.clientHeight ) * 180 / Math.PI; // vertical fov
+    const fov = 2 * Math.atan(1 / proj[5] / vh * container.clientHeight) * 180 / Math.PI; // vertical fov
     const near = proj[14] / (proj[10] - 1.0);
     const far = proj[14] / (proj[10] + 1.0);
     const ratio = proj[5] / proj[0]; // (r-l) / (t-b)
@@ -162,10 +164,10 @@ AFRAME.registerSystem('mindar-image-system', {
     this.video.style.width = vw + "px";
     this.video.style.height = vh + "px";
 
-    const {dimensions: imageTargetDimensions} = await this.controller.addImageTargets(this.imageTargetSrc);
+    const { dimensions: imageTargetDimensions } = await this.controller.addImageTargets(this.imageTargetSrc);
 
     for (let i = 0; i < this.anchorEntities.length; i++) {
-      const {el, targetIndex} = this.anchorEntities[i];
+      const { el, targetIndex } = this.anchorEntities[i];
       if (targetIndex < imageTargetDimensions.length) {
         el.setupMarker(imageTargetDimensions[targetIndex]);
       }
@@ -184,21 +186,21 @@ AFRAME.registerComponent('mindar-image', {
   dependencies: ['mindar-image-system'],
 
   schema: {
-    imageTargetSrc: {type: 'string'},
-    maxTrack: {type: 'int', default: 1},
-    showStats: {type: 'boolean', default: false},
-    captureRegion: {type: 'boolean', default: false},
-    autoStart: {type: 'boolean', default: true},
-    uiLoading: {type: 'string', default: 'yes'},
-    uiScanning: {type: 'string', default: 'yes'},
-    uiError: {type: 'string', default: 'yes'},
+    imageTargetSrc: { type: 'string' },
+    maxTrack: { type: 'int', default: 1 },
+    showStats: { type: 'boolean', default: false },
+    captureRegion: { type: 'boolean', default: false },
+    autoStart: { type: 'boolean', default: true },
+    uiLoading: { type: 'string', default: 'yes' },
+    uiScanning: { type: 'string', default: 'yes' },
+    uiError: { type: 'string', default: 'yes' },
   },
 
-  init: function() {
+  init: function () {
     const arSystem = this.el.sceneEl.systems['mindar-image-system'];
 
     arSystem.setup({
-      imageTargetSrc: this.data.imageTargetSrc, 
+      imageTargetSrc: this.data.imageTargetSrc,
       maxTrack: this.data.maxTrack,
       captureRegion: this.data.captureRegion,
       showStats: this.data.showStats,
@@ -218,12 +220,12 @@ AFRAME.registerComponent('mindar-image-target', {
   dependencies: ['mindar-image-system'],
 
   schema: {
-    targetIndex: {type: 'number'},
+    targetIndex: { type: 'number' },
   },
 
   postMatrix: null, // rescale the anchor to make width of 1 unit = physical width of card
 
-  init: function() {
+  init: function () {
     const arSystem = this.el.sceneEl.systems['mindar-image-system'];
     arSystem.registerAnchor(this, this.data.targetIndex);
 
@@ -234,11 +236,11 @@ AFRAME.registerComponent('mindar-image-target', {
     const modelEl = this.el.querySelector("a-gltf-model")
     if (modelEl && modelEl.getAttribute("mindar-image-paint")) {
       modelEl.addEventListener('model-loaded', () => {
-	modelEl.getObject3D('mesh').traverse((o) => {
-	  if (o.isMesh && o.material && o.material.name === modelEl.getAttribute("mindar-image-paint")) {
-	    this.paintMaterial = o.material;
-	  }
-	});
+        modelEl.getObject3D('mesh').traverse((o) => {
+          if (o.isMesh && o.material && o.material.name === modelEl.getAttribute("mindar-image-paint")) {
+            this.paintMaterial = o.material;
+          }
+        });
       });
     }
 
@@ -257,6 +259,12 @@ AFRAME.registerComponent('mindar-image-target', {
     scale.z = markerWidth;
     this.postMatrix = new AFRAME.THREE.Matrix4();
     this.postMatrix.compose(position, quaternion, scale);
+    // const image = new Image();
+    // image.src = 'https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif';
+    // image.onload = () => {
+    //   var element = document.getElementById("#modelEntity");
+    //   element.appendChild(image);
+    // };
   },
 
   updateWorldMatrix(worldMatrix) {
@@ -284,11 +292,11 @@ AFRAME.registerComponent('mindar-image-target', {
     const data = new Uint8ClampedArray(height * width * 4);
     for (let j = 0; j < height; j++) {
       for (let i = 0; i < width; i++) {
-	const pos = j * width + i;
-	data[pos*4 + 0] = pixels[j][i][0];
-	data[pos*4 + 1] = pixels[j][i][1];
-	data[pos*4 + 2] = pixels[j][i][2];
-	data[pos*4 + 3] = 255; 
+        const pos = j * width + i;
+        data[pos * 4 + 0] = pixels[j][i][0];
+        data[pos * 4 + 1] = pixels[j][i][1];
+        data[pos * 4 + 2] = pixels[j][i][2];
+        data[pos * 4 + 3] = 255;
       }
     }
     const imageData = new ImageData(data, width, height);
