@@ -59,12 +59,7 @@ function load3dModles() {
 		markerDiv.setAttribute("gltf-model", "models/3D/skyscraper.gltf");
 		markerDiv.setAttribute("scale", "0.05 0.05 0.05");
 	}
-	const modelEntity = document.createElement("a-entity");
-	modelEntity.setAttribute("id", "#modelEntity");
-	modelEntity.setAttribute("mindar-image-target", "targetIndex: 0");
-	modelEntity.setAttribute("animation-mixer");
-	var sceneNode = document.getElementById("#scene");
-	sceneNode.appendChild(modelEntity);
+
 	var element = document.getElementById("#modelEntity");
 	element.appendChild(markerDiv);
 }
@@ -73,22 +68,18 @@ function loadImages() {
 	const urlParams = new URLSearchParams(window.location.search)
 	let modelId = urlParams.get("model")
 
-	var sceneNode = document.getElementById("#scene");
-	const modelEntity = document.createElement("a-image");
-	modelEntity.setAttribute("id", "#modelEntity");
-	modelEntity.setAttribute("mindar-image-target", "targetIndex: 0");
-	sceneNode.appendChild(modelEntity);
+	const aImage = document.createElement("a-image");
+	aImage.setAttribute("id", "#modelEntaImage");
+	var element = document.getElementById("#modelEntity");
+	element.appendChild(aImage);
 
 	const gifImage = document.getElementById("gifimage");
 	const gimImageAsset = document.getElementById("gifImageAsset");
 	const markerDiv = document.createElement("a-entity");
-	// markerDiv.setAttribute("rotation", "0 0 0");
-	// markerDiv.setAttribute("position", "0 0 0");
 	if (modelId == "1") {
 		gifImage.setAttribute("src", "models/Image/Osaka.gif");
 		gimImageAsset.setAttribute("src", "models/Image/Osaka.gif");
 		markerDiv.setAttribute("material", "shader:draw-canvas;src:#gifImageAsset");
-		// markerDiv.setAttribute("scale", "1 1 1");
 	}
 	else if (modelId == "3") {
 		gifImage.setAttribute("src", "models/Image/butterflies.gif");
@@ -98,22 +89,21 @@ function loadImages() {
 	}
 	else if (modelId == "2") {
 		gimImageAsset.setAttribute("src", "models/Image/love.png");
-		modelEntity.setAttribute("material", "src:#gifImageAsset");
+		aImage.setAttribute("material", "src:#gifImageAsset");
 		markerDiv.setAttribute("scale", "1 1 1");
 	}
 	else if (modelId == "4") {
-		// markerDiv.setAttribute("src", "models/Image/4.jpg");
 		gimImageAsset.setAttribute("src", "models/Image/4.jpg");
-		modelEntity.setAttribute("material", "src:#gifImageAsset");
+		aImage.setAttribute("material", "src:#gifImageAsset");
 		markerDiv.setAttribute("scale", "1 1 1");
 	} else {
-		// markerDiv.setAttribute("src", "models/Image/5.jpg");
 		gimImageAsset.setAttribute("src", "models/Image/5.jpg");
-		modelEntity.setAttribute("material", "src:#gifImageAsset");
+		aImage.setAttribute("material", "src:#gifImageAsset");
 		markerDiv.setAttribute("scale", "1 1 1");
 	}
 	
-	sceneNode.appendChild(markerDiv);
+	var element = document.getElementById("#modelEntity");
+	element.appendChild(markerDiv);
 }
 
 

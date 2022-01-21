@@ -491,7 +491,7 @@ AFRAME.registerShader('draw-canvas', {
      */
     __clearCanvas: function __clearCanvas() {
         this.canvasAssetCtx.clearRect(0, 0, this.__width, this.__height);
-        document.getElementById("#modelEntity").setAttribute('material', 'src', '');
+        document.getElementById("#modelEntaImage").setAttribute('material', 'src', '');
         this.__ctx.clearRect(0, 0, this.__width, this.__height);
         this.__texture.needsUpdate = true;
     },
@@ -509,7 +509,7 @@ AFRAME.registerShader('draw-canvas', {
         // img.src = this.__frames[this.__frameIdx].src
         if (this.__frames && this.__frames.length > 0) {
             this.canvasAssetCtx.drawImage(this.__frames[this.__frameIdx], 0, 0, this.__width, this.__height);
-            document.getElementById("#modelEntity").setAttribute('material', 'src', '#my-canvas');
+            document.getElementById("#modelEntaImage").setAttribute('material', 'src', '#my-canvas');
             this.__ctx.drawImage(this.__frames[this.__frameIdx], 0, 0, this.__width, this.__height);
             // console.log(image);
 
