@@ -62,6 +62,7 @@ function load3dModles() {
 	const modelEntity = document.createElement("a-entity");
 	modelEntity.setAttribute("id", "#modelEntity");
 	modelEntity.setAttribute("mindar-image-target", "targetIndex: 0");
+	modelEntity.setAttribute("animation-mixer");
 	var sceneNode = document.getElementById("#scene");
 	sceneNode.appendChild(modelEntity);
 	var element = document.getElementById("#modelEntity");
