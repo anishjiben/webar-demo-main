@@ -52,7 +52,6 @@ AFRAME.registerShader('draw-canvas', {
         this.__texture = new THREE.CanvasTexture(this.__cnv); //renders straight from a canvas
         this.__texture.needsUpdate = true;
         this.__reset();
-        // console.log('color : ', new THREE.Color( 0x800080 ));
         this.material = new THREE.MeshBasicMaterial({
             map: this.__texture,
             fog: false,
@@ -61,12 +60,9 @@ AFRAME.registerShader('draw-canvas', {
             // alphaTest: 0.5
             // color: 0x800080
         });
-        // this.material.color.setStyle("#0000ffff");
-        console.log(this.material.toJSON());
         this.__texture.needsUpdate = true;
 
         this._fillImages((images) => {
-            console.log(images);
             this.__frames = images;
             this.__addPublicFunctions();
             this.el.sceneEl.addBehavior(this);
@@ -81,7 +77,6 @@ AFRAME.registerShader('draw-canvas', {
      * @param {object|null} oldData
      */
     update: function update(oldData) {
-        // console.log('update', oldData);
         this.__updateTexture(oldData);
         return this.material;
     },
@@ -291,11 +286,9 @@ AFRAME.registerShader('draw-canvas', {
                     onError('This is not gif. Please use `shader:flat` instead');
                     return;
                 }
-                console.log('getimage');
-
+                console.log("asdfasdgasdgasdgasdgasdgasdfgadsg");
                 /* parse data */
                 parseGIFShader(arr, function (times, cnt, frames) {
-                    console.log('getimage 1');
                     /* store data */
                     var newData = { status: 'success', src: src, times: times, cnt: cnt, frames: frames, timestamp: Date.now() };
                     /* callbacks */
@@ -307,7 +300,6 @@ AFRAME.registerShader('draw-canvas', {
                         gifData[src] = newData;
                     }
                 }, function (err) {
-                    console.log('getimage 2');
 
                     return onError(err);
                 });
@@ -345,18 +337,34 @@ AFRAME.registerShader('draw-canvas', {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', src);
         xhr.responseType = 'arraybuffer';
-        xhr.addEventListener('load',  (e)=> {
+        xhr.addEventListener('load', (e) => {
             var uint8Array = new Uint8Array(e.target.response);
 
             var gif = parseGIFUCT(e.target.response);
-            console.log(gif);
             var frames = decompressFrames(gif, true);
-            // console.log(frames)
+            console.log(frames)
             this.__delayTimes = [];
-             frames.forEach((frame)=>{
+            frames.forEach((frame) => {
                 this.__delayTimes.push(frame.delay);
             });
-            console.log(this.__delayTimes);
+
+
+            this.__textureSrc = src;
+            this.__infinity = true;
+            this.__frameCnt = frames.length;
+            this.__startTime = Date.now();
+            this.__width = THREE.Math.floorPowerOfTwo(frames[0].dims.width);
+            this.__height = THREE.Math.floorPowerOfTwo(frames[0].dims.height);
+            this.__cnv.width = this.__width;
+            this.__cnv.height = this.__height;
+            this.canvasAsset.width = this.__width;
+            this.canvasAsset.height = this.__height;
+            this.__draw();
+            if (this.__autoplay) {
+                this.play();
+            } else {
+                this.pause();
+            }
 
             var arr = uint8Array.subarray(0, 4);
             // const header = arr.map(value => value.toString(16)).join('')
@@ -365,14 +373,14 @@ AFRAME.registerShader('draw-canvas', {
                 header += arr[i].toString(16);
             }
             if (header === '47494638') {
-                cb(uint8Array);
+                // cb(uint8Array);
             } else {
-                cb();
+                // cb();
             }
         });
         xhr.addEventListener('error', function (e) {
             log(e);
-            cb();
+            // cb();
         });
         xhr.send();
     },
@@ -568,14 +576,12 @@ AFRAME.registerShader('draw-canvas', {
      */
 
     __reset: function __reset() {
-        console.log('reset');
         this.pause();
         this.__clearCanvas();
         this.__startTime = 0;
         this.__nextFrameTime = 0;
         this.__frameIdx = 0;
         this.__frameCnt = 0;
-        console.log(this.__delayTimes);
         // this.__delayTimes = null;
         this.__infinity = false;
         this.__loopCnt = 0;
@@ -617,7 +623,6 @@ AFRAME.registerShader('draw-canvas', {
                         images[i] = img.get(0);
                     }
                     //   frames.append(images[0]);
-                    //   console.log(images[0]);
                     cb(images);
                 });
             }
@@ -635,12 +640,10 @@ parseGIFShader = function (gif, successCB, errorCB) {
     var imageData = null;
     var frames = [];
     var loopCnt = 0;
-    // console.log('parse ',gif);
     if (gif[0] === 0x47 && gif[1] === 0x49 && gif[2] === 0x46 && // 'GIF'
         gif[3] === 0x38 && gif[4] === 0x39 && gif[5] === 0x61) {
         // '89a'
         pos += 13 + +!!(gif[10] & 0x80) * Math.pow(2, (gif[10] & 0x07) + 1) * 3;
-        // console.log('parse ',pos);
         var gifHeader = gif.subarray(0, pos);
         while (gif[pos] && gif[pos] !== 0x3b) {
             var offset = pos,
@@ -648,8 +651,6 @@ parseGIFShader = function (gif, successCB, errorCB) {
             if (blockId === 0x21) {
                 var label = gif[++pos];
                 if ([0x01, 0xfe, 0xf9, 0xff].indexOf(label) !== -1) {
-                    // label === 0xf9 && console.log('parse delay',pos + 3);
-                    // label === 0xf9 && console.log('parse delay2 ',gif[pos + 3], ":", (gif[pos + 4] << 8));
                     label === 0xf9 && delayTimes.push((gif[pos + 3] + (gif[pos + 4] << 8)) * 10);
                     label === 0xff && (loopCnt = gif[pos + 15] + (gif[pos + 16] << 8));
                     while (gif[++pos]) {
@@ -692,7 +693,6 @@ parseGIFShader = function (gif, successCB, errorCB) {
                     }
                 }.bind(img, null, i);
                 img.src = src;
-                // console.log('img: ', img);
             });
         };
         var imageFix = function imageFix(i) {
