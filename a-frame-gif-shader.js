@@ -591,6 +591,11 @@ AFRAME.registerShader('draw-canvas', {
     },
 
     _fillImages: function _fillImages(cb) {
+
+        if(this.__frames && this.__frames.length>0){
+            return
+        }
+
         let c = document.getElementById("myCanvas");
         let ctx = c.getContext("2d");
         ctx.clearRect(0, 0, ctx.width, ctx.height);
@@ -610,18 +615,21 @@ AFRAME.registerShader('draw-canvas', {
                     // Keep the reference to save on expensive DOM lookups every iteration.
                     let frames = $("#frames");
                     for (let i = 0; i < rub.get_length(); i++) {
-                        setTimeout(() => {
-                            total += 1;
+                        // setTimeout(() => {
                             rub.move_to(i);
-                            var canvas = rub.get_canvas().toDataURL('image/png');
-                            let img = $('<img id = "gifframe' + i + '"src= "' + canvas + '" class="frameimages" width="360" height="360">');
+                            rub.get_canvas().toBlob((blob) => {
+                           total += 1;
+                            url = URL.createObjectURL(blob);
+                            let img = $('<img id = "gifframe' + i + '"src= "' + url + '" class="frameimages" width="360" height="360">');
                             images[i] = img.get(0);
-                            console.log("loop started ");
-                            if (i === rub.get_length()-1) {
+                            console.log(total);
+                            if ( total == rub.get_length()) {
                                 console.log("loop end");
                                 cb(images);
                             }
-                        }, 500);
+                        }, 'image/png');
+                        // console.log("loop started ");
+                        // }, 1000);
                     }
                     //   frames.append(images[0]);
                     // cb(images);
