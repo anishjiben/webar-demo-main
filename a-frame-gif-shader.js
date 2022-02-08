@@ -62,13 +62,17 @@ AFRAME.registerShader('draw-canvas', {
         });
         this.__texture.needsUpdate = true;
 
-        this._fillImages((images) => {
-            console.log("asdf");
-            this.__frames = images;
-            this.__addPublicFunctions();
-            this.el.sceneEl.addBehavior(this);
-            this.__updateTexture(data);
-        });
+        // this._fillImages((images) => {
+        //     console.log("asdf");
+        //     this.__frames = images;
+        //     this.__addPublicFunctions();
+        //     this.el.sceneEl.addBehavior(this);
+        //     this.__updateTexture(data);
+        // });
+        this.__addPublicFunctions();
+        this.el.sceneEl.addBehavior(this);
+        this.__updateTexture(data);
+
         return this.material;
     },
 
@@ -287,9 +291,9 @@ AFRAME.registerShader('draw-canvas', {
                     onError('This is not gif. Please use `shader:flat` instead');
                     return;
                 }
-                console.log("asdfasdgasdgasdgasdgasdgasdfgadsg");
                 /* parse data */
                 parseGIFShader(arr, function (times, cnt, frames) {
+                    console.log("asdfasdgasdgasdgasdgasdgasdfgadsg");
                     /* store data */
                     var newData = { status: 'success', src: src, times: times, cnt: cnt, frames: frames, timestamp: Date.now() };
                     /* callbacks */
@@ -343,29 +347,29 @@ AFRAME.registerShader('draw-canvas', {
 
             var gif = parseGIFUCT(e.target.response);
             var frames = decompressFrames(gif, true);
-            console.log(frames)
+            // console.log(frames)
             this.__delayTimes = [];
             frames.forEach((frame) => {
                 this.__delayTimes.push(frame.delay);
             });
 
 
-            this.__textureSrc = src;
-            this.__infinity = true;
-            this.__frameCnt = frames.length;
-            this.__startTime = Date.now();
-            this.__width = THREE.Math.floorPowerOfTwo(frames[0].dims.width);
-            this.__height = THREE.Math.floorPowerOfTwo(frames[0].dims.height);
-            this.__cnv.width = this.__width;
-            this.__cnv.height = this.__height;
-            this.canvasAsset.width = this.__width;
-            this.canvasAsset.height = this.__height;
-            this.__draw();
-            if (this.__autoplay) {
-                this.play();
-            } else {
-                this.pause();
-            }
+            // this.__textureSrc = src;
+            // this.__infinity = true;
+            // this.__frameCnt = frames.length;
+            // this.__startTime = Date.now();
+            // this.__width = THREE.Math.floorPowerOfTwo(frames[0].dims.width);
+            // this.__height = THREE.Math.floorPowerOfTwo(frames[0].dims.height);
+            // this.__cnv.width = this.__width;
+            // this.__cnv.height = this.__height;
+            // this.canvasAsset.width = this.__width;
+            // this.canvasAsset.height = this.__height;
+            // this.__draw();
+            // if (this.__autoplay) {
+            //     this.play();
+            // } else {
+            //     this.pause();
+            // }
 
             var arr = uint8Array.subarray(0, 4);
             // const header = arr.map(value => value.toString(16)).join('')
@@ -374,14 +378,14 @@ AFRAME.registerShader('draw-canvas', {
                 header += arr[i].toString(16);
             }
             if (header === '47494638') {
-                // cb(uint8Array);
+                cb(uint8Array);
             } else {
-                // cb();
+                cb();
             }
         });
         xhr.addEventListener('error', function (e) {
             log(e);
-            // cb();
+            cb();
         });
         xhr.send();
     },
@@ -550,7 +554,7 @@ AFRAME.registerShader('draw-canvas', {
         // this.__delayTimes = times;
         cnt ? this.__loopCnt = cnt : this.__infinity = true;
         // this.__infinity = true;
-        // this.__frames = frames;
+        this.__frames = frames;
         this.__frameCnt = times.length;
         this.__startTime = Date.now();
         this.__width = THREE.Math.floorPowerOfTwo(frames[0].width);
@@ -592,7 +596,7 @@ AFRAME.registerShader('draw-canvas', {
 
     _fillImages: function _fillImages(cb) {
 
-        if(this.__frames && this.__frames.length>0){
+        if (this.__frames && this.__frames.length > 0) {
             return
         }
 
@@ -616,18 +620,20 @@ AFRAME.registerShader('draw-canvas', {
                     let frames = $("#frames");
                     for (let i = 0; i < rub.get_length(); i++) {
                         // setTimeout(() => {
-                            rub.move_to(i);
-                            rub.get_canvas().toBlob((blob) => {
-                           total += 1;
+                        rub.move_to(i);
+                        rub.get_canvas().toBlob((blob) => {
+                            total += 1;
                             url = URL.createObjectURL(blob);
-                            let img = $('<img id = "gifframe' + i + '"src= "' + url + '" class="frameimages" width="360" height="360">');
-                            images[i] = img.get(0);
+                            var img = new Image();
+                            img.src = url;
+                            // let img = $('<img id = "gifframe' + i + '"src= "' + url + '" class="frameimages" width="360" height="360">');
+                            images[i] = img;
                             console.log(total);
-                            if ( total == rub.get_length()) {
+                            if (total == rub.get_length()) {
                                 console.log("loop end");
                                 cb(images);
                             }
-                        }, 'image/png');
+                        }, 'image/png', 0.1);
                         // console.log("loop started ");
                         // }, 1000);
                     }
