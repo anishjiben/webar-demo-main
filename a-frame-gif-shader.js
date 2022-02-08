@@ -63,6 +63,7 @@ AFRAME.registerShader('draw-canvas', {
         this.__texture.needsUpdate = true;
 
         this._fillImages((images) => {
+            console.log("asdf");
             this.__frames = images;
             this.__addPublicFunctions();
             this.el.sceneEl.addBehavior(this);
@@ -286,7 +287,7 @@ AFRAME.registerShader('draw-canvas', {
                     onError('This is not gif. Please use `shader:flat` instead');
                     return;
                 }
-console.log("asdfasdgasdgasdgasdgasdgasdfgadsg");
+                console.log("asdfasdgasdgasdgasdgasdgasdfgadsg");
                 /* parse data */
                 parseGIFShader(arr, function (times, cnt, frames) {
                     /* store data */
@@ -609,21 +610,21 @@ console.log("asdfasdgasdgasdgasdgasdgasdfgadsg");
                     // Keep the reference to save on expensive DOM lookups every iteration.
                     let frames = $("#frames");
                     for (let i = 0; i < rub.get_length(); i++) {
-                        total += 1;
-                        rub.move_to(i);
-                        // var canvas = cloneCanvas(rub.get_canvas());
-                        var canvas = rub.get_canvas().toDataURL('image/webp');
-                        let img = $('<img id = "gifframe' + i + '"src= "' + canvas + '" class="frameimages" width="360" height="360">');
-
-                        // Use the reference to append the image.
-                        // frames.append(img);
-
-                        // Add image to images array with the current index as the array index.
-                        // Use the jQuery get method to get the actual DOM element.
-                        images[i] = img.get(0);
+                        setTimeout(() => {
+                            total += 1;
+                            rub.move_to(i);
+                            var canvas = rub.get_canvas().toDataURL('image/webp');
+                            let img = $('<img id = "gifframe' + i + '"src= "' + canvas + '" class="frameimages" width="360" height="360">');
+                            images[i] = img.get(0);
+                            console.log("loop started ");
+                            if (i === rub.get_length()-1) {
+                                console.log("loop end");
+                                cb(images);
+                            }
+                        }, 500);
                     }
                     //   frames.append(images[0]);
-                    cb(images);
+                    // cb(images);
                 });
             }
         });
