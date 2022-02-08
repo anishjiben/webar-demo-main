@@ -340,31 +340,31 @@ console.log("asdfasdgasdgasdgasdgasdgasdfgadsg");
         xhr.addEventListener('load', (e) => {
             var uint8Array = new Uint8Array(e.target.response);
 
-            // var gif = parseGIFUCT(e.target.response);
-            // var frames = decompressFrames(gif, true);
-            // console.log(frames)
-            // this.__delayTimes = [];
-            // frames.forEach((frame) => {
-            //     this.__delayTimes.push(frame.delay);
-            // });
+            var gif = parseGIFUCT(e.target.response);
+            var frames = decompressFrames(gif, true);
+            console.log(frames)
+            this.__delayTimes = [];
+            frames.forEach((frame) => {
+                this.__delayTimes.push(frame.delay);
+            });
 
 
-            // this.__textureSrc = src;
-            // this.__infinity = true;
-            // this.__frameCnt = frames.length;
-            // this.__startTime = Date.now();
-            // this.__width = THREE.Math.floorPowerOfTwo(frames[0].dims.width);
-            // this.__height = THREE.Math.floorPowerOfTwo(frames[0].dims.height);
-            // this.__cnv.width = this.__width;
-            // this.__cnv.height = this.__height;
-            // this.canvasAsset.width = this.__width;
-            // this.canvasAsset.height = this.__height;
-            // this.__draw();
-            // if (this.__autoplay) {
-            //     this.play();
-            // } else {
-            //     this.pause();
-            // }
+            this.__textureSrc = src;
+            this.__infinity = true;
+            this.__frameCnt = frames.length;
+            this.__startTime = Date.now();
+            this.__width = THREE.Math.floorPowerOfTwo(frames[0].dims.width);
+            this.__height = THREE.Math.floorPowerOfTwo(frames[0].dims.height);
+            this.__cnv.width = this.__width;
+            this.__cnv.height = this.__height;
+            this.canvasAsset.width = this.__width;
+            this.canvasAsset.height = this.__height;
+            this.__draw();
+            if (this.__autoplay) {
+                this.play();
+            } else {
+                this.pause();
+            }
 
             var arr = uint8Array.subarray(0, 4);
             // const header = arr.map(value => value.toString(16)).join('')
@@ -373,14 +373,14 @@ console.log("asdfasdgasdgasdgasdgasdgasdfgadsg");
                 header += arr[i].toString(16);
             }
             if (header === '47494638') {
-                cb(uint8Array);
+                // cb(uint8Array);
             } else {
-                cb();
+                // cb();
             }
         });
         xhr.addEventListener('error', function (e) {
             log(e);
-            cb();
+            // cb();
         });
         xhr.send();
     },
@@ -546,7 +546,7 @@ console.log("asdfasdgasdgasdgasdgasdgasdfgadsg");
         console.log("refs :", _ref);
 
         this.__textureSrc = src;
-        this.__delayTimes = times;
+        // this.__delayTimes = times;
         cnt ? this.__loopCnt = cnt : this.__infinity = true;
         // this.__infinity = true;
         // this.__frames = frames;
@@ -582,7 +582,7 @@ console.log("asdfasdgasdgasdgasdgasdgasdfgadsg");
         this.__nextFrameTime = 0;
         this.__frameIdx = 0;
         this.__frameCnt = 0;
-        this.__delayTimes = null;
+        // this.__delayTimes = null;
         this.__infinity = false;
         this.__loopCnt = 0;
         this.__frames = null;
