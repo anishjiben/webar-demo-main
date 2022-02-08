@@ -62,12 +62,12 @@ AFRAME.registerShader('draw-canvas', {
         });
         this.__texture.needsUpdate = true;
 
-        this._fillImages((images) => {
-            this.__frames = images;
-            this.__addPublicFunctions();
-            this.el.sceneEl.addBehavior(this);
-            this.__updateTexture(data);
-        });
+        // this._fillImages((images) => {
+        //     this.__frames = images;
+        //     this.__addPublicFunctions();
+        //     this.el.sceneEl.addBehavior(this);
+        //     this.__updateTexture(data);
+        // });
         return this.material;
     },
 
