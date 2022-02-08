@@ -613,7 +613,7 @@ AFRAME.registerShader('draw-canvas', {
                         setTimeout(() => {
                             total += 1;
                             rub.move_to(i);
-                            var canvas = rub.get_canvas().toDataURL('image/webp');
+                            var canvas = rub.get_canvas().toDataURL('image/png');
                             let img = $('<img id = "gifframe' + i + '"src= "' + canvas + '" class="frameimages" width="360" height="360">');
                             images[i] = img.get(0);
                             console.log("loop started ");
