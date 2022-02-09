@@ -20,6 +20,7 @@ function createError(err, src) {
     return { status: 'error', src: src, message: err, timestamp: Date.now() }
 }
 
+var userGifler = false;
 
 AFRAME.registerShader('draw-canvas', {
 
@@ -92,7 +93,7 @@ AFRAME.registerShader('draw-canvas', {
      * @protected
      */
     tick: function tick(t) {
-        if (!this.__frames || this.paused()) return;
+        // if (!this.__frames || this.paused()) return;
         if (Date.now() - this.__startTime >= this.__nextFrameTime) {
             this.nextFrame();
         }
@@ -347,11 +348,11 @@ AFRAME.registerShader('draw-canvas', {
 
             var gif = parseGIFUCT(e.target.response);
             var frames = decompressFrames(gif, true);
-            // console.log(frames)
             this.__delayTimes = [];
             frames.forEach((frame) => {
                 this.__delayTimes.push(frame.delay);
             });
+            console.log(this.__delayTimes);
 
 
             // this.__textureSrc = src;
@@ -480,6 +481,9 @@ AFRAME.registerShader('draw-canvas', {
      * @public
      */
     nextFrame: function nextFrame() {
+        if(!this.__delayTimes){
+            return
+        }
         this.__draw();
 
         /* update next frame time */
@@ -503,9 +507,13 @@ AFRAME.registerShader('draw-canvas', {
      * @private
      */
     __clearCanvas: function __clearCanvas() {
-        this.canvasAssetCtx.clearRect(0, 0, this.__width, this.__height);
-        document.getElementById("#modelEntaImage").setAttribute('material', 'src', '');
-        this.__ctx.clearRect(0, 0, this.__width, this.__height);
+        if (this.__frames && this.__frames.length > 0) {
+            this.canvasAssetCtx.clearRect(0, 0, this.__width, this.__height);
+            document.getElementById("#modelEntaImage").setAttribute('material', 'src', '');
+            this.__ctx.clearRect(0, 0, this.__width, this.__height);
+        } else{
+            document.getElementById("#modelEntaImage").setAttribute('material', 'src', '');
+        }
         this.__texture.needsUpdate = true;
     },
 
@@ -516,18 +524,16 @@ AFRAME.registerShader('draw-canvas', {
      */
     __draw: function __draw() {
         this.__clearCanvas();
-        // var image = new Image();
-        // image.src = this.__frames[this.__frameIdx].src;
-        // const img = document.getElementById('butterflies');
-        // img.src = this.__frames[this.__frameIdx].src
+
         if (this.__frames && this.__frames.length > 0) {
             this.canvasAssetCtx.drawImage(this.__frames[this.__frameIdx], 0, 0, this.__width, this.__height);
             document.getElementById("#modelEntaImage").setAttribute('material', 'src', '#my-canvas');
             this.__ctx.drawImage(this.__frames[this.__frameIdx], 0, 0, this.__width, this.__height);
             // console.log(image);
-
-            this.__texture.needsUpdate = true;
+        } else {
+            document.getElementById("#modelEntaImage").setAttribute('material', 'src', '#my-canvas');
         }
+        this.__texture.needsUpdate = true;
     },
 
 
@@ -554,7 +560,13 @@ AFRAME.registerShader('draw-canvas', {
         // this.__delayTimes = times;
         cnt ? this.__loopCnt = cnt : this.__infinity = true;
         // this.__infinity = true;
-        this.__frames = frames;
+        if (times[0] !== 0) {
+            gifler('https://anishjiben.github.io/webar-demo-main/models/Image/butterflies.gif').animate(this.canvasAsset);
+            userGifler = true;
+        } else {
+            this.__frames = frames;
+            userGifler = false;
+        }
         this.__frameCnt = times.length;
         this.__startTime = Date.now();
         this.__width = THREE.Math.floorPowerOfTwo(frames[0].width);
